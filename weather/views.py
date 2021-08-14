@@ -5,6 +5,7 @@ from .forms import CityForm
 
 
 def index(request):
+	countries = ['Tashkent', 'Tokio']
 	url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=271d1234d3f497eed5b1d80a07b3fcd1'
 
 	err_msg = ''
@@ -51,7 +52,16 @@ def index(request):
 
 			weather_data.append(city_weather)
 	except KeyError:
-		pass
+		for city in countries:
+			r = requests.get(url.format(city)).json()
+			city_weather = {
+				'city': city.name,
+				'temperature': r['main']['temp'],
+				'description': r['weather'][0]['description'],
+				'icon': r['weather'][0]['icon'],
+				}
+
+			weather_data.append(city_weather)
 	context = {
 		'weather_data': weather_data,
 		'form': form,
