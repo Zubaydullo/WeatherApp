@@ -38,9 +38,8 @@ def index(request):
 	form = CityForm()
 
 	cities = City.objects.all()
-
-	weather_data = []
-	try:
+	if cities:
+		weather_data = []
 		for city in cities:
 			r = requests.get(url.format(city)).json()
 			city_weather = {
@@ -51,7 +50,7 @@ def index(request):
 				}
 
 			weather_data.append(city_weather)
-	except KeyError:
+	else:
 		pass
 	context = {
 		'weather_data': weather_data,
