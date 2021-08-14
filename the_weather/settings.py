@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'the_weather.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dcq5775eta7ou1',
         'HOST': 'ec2-44-195-209-130.compute-1.amazonaws.com',
         'PORT': 5432,
