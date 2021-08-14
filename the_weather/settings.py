@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-uuc-ob!ohv$w##@pan+1yv(^sp!1&!u-s^w2rq(3@=$!*ux7-b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['radiant-falls-75975.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['weather-info-uz.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
