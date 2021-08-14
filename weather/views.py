@@ -109,18 +109,7 @@ def home(request):
 
 			weather_data.append(city_weather)
 	except KeyError:
-		for city in countries:
-			r = requests.get(url.format(city)).json()
-
-			city_weather = {
-				'city': city,
-				'temperature': r['main']['temp'],
-				'description': r['weather'][0]['description'],
-				'icon': r['weather'][0]['icon'],
-			}
-
-
-			weather_data.append(city_weather)
+		pass
 	weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 	today = date.today()
 	now = datetime.now()
