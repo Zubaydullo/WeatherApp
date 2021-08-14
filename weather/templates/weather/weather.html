@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <style>
+        body {
+    color: #fff;
+    overflow-x: hidden;
+    height: 100%;
+    background-color: #CFD8DC;
+    background-repeat: no-repeat
+}
+
+.card {
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 4px #9E9E9E;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.time-font {
+    font-size: 30px
+}
+
+.sm-font {
+    font-size: 18px
+}
+
+.med-font {
+    font-size: 28px
+}
+    </style>
+</head>
+<body>
+<section class="hero is-primary ">
+        <div class="hero-body bg-success">
+            <div class="container">
+                <h1 class="title text-center" >
+                    What's the weather like?
+                </h1>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="btn btn-outline-success">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container-fluid px-1 px-md-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-center px-3">
+        {% for city_weather in weather_data %}
+        <div class="card" style="background-image: url('http://openweathermap.org/img/w/{{ city_weather.icon }}.png')">
+            <h2 class="ml-auto mr-4 mt-3 mb-0 text-dark">{{city_weather.city}}</h2>
+            <p class="ml-auto mr-4 mb-0 med-font text-dark">{{ city_weather.temperature }}° C</p>
+            <p class="time-font mb-0 ml-4 mt-auto text-dark">{{current_time}}</p>
+            <p class="ml-4 mb-4 text-dark">{{week_day}} {{today}}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
