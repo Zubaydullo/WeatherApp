@@ -94,20 +94,33 @@ def home(request):
 	cities = City.objects.all()
 
 	weather_data = []
+	countries = ['Tashkent', 'Tokio']
+	try:
+		for city in cities:
+			r = requests.get(url.format(city)).json()
 
-	for city in cities:
-		r = requests.get(url.format(city)).json()
-		print(r.text)
-
-		city_weather = {
-			'city': city.name,
-			'temperature': r['main']['temp'],
-			'description': r['weather'][0]['description'],
-			'icon': r['weather'][0]['icon'],
-		}
+			city_weather = {
+				'city': city.name,
+				'temperature': r['main']['temp'],
+				'description': r['weather'][0]['description'],
+				'icon': r['weather'][0]['icon'],
+			}
 
 
-		weather_data.append(city_weather)
+			weather_data.append(city_weather)
+	except KeyError:
+		for city in countries:
+			r = requests.get(url.format(city)).json()
+
+			city_weather = {
+				'city': city,
+				'temperature': r['main']['temp'],
+				'description': r['weather'][0]['description'],
+				'icon': r['weather'][0]['icon'],
+			}
+
+
+			weather_data.append(city_weather)
 	weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 	today = date.today()
 	now = datetime.now()
