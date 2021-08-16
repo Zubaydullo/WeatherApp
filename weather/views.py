@@ -88,7 +88,6 @@ def check_city(city):
 
 def home(request):
 	url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=e5472bae81702f27e4dccddba51928ab'
-	cities = City.objects.all()
 
 	if request.method == 'POST':
 		form = CityForm(request.POST)
@@ -102,10 +101,10 @@ def home(request):
 	form = CityForm()
 
 	weather_data = []
-
-	try:
-		for city in cities:
-			r = requests.get(url.format(city)).json()
+	cities = City.objects.all()
+	for city in cities:
+		r = requests.get(url.format(city)).json()
+		if not r['cod'] == '404':
 			city_weather = {
 				'city': city.name,
 				'temperature': r['main']['temp'],
@@ -113,8 +112,9 @@ def home(request):
 				'icon': r['weather'][0]['icon'],
 			}
 			weather_data.append(city_weather)
-	except KeyError:
-		messages.info(request, "Please enter the valid city name!")
+		else:
+			messages.warning(request, "Please enter the valid city name!")
+			city.delete()
 	weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 	today = date.today()
 	now = datetime.now()
