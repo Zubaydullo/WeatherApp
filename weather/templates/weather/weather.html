@@ -6,15 +6,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Global Weather Forecast</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <style>
         body {
     color: #fff;
     overflow-x: hidden;
     height: 100%;
-    background-color: #CFD8DC;
-    background-repeat: no-repeat
+    background-color: #5D8233;
+    background-repeat: no-repeat;
 }
 
 .card {
@@ -25,11 +24,19 @@
     box-shadow: 0px 8px 16px 4px #9E9E9E;
     margin-top: 50px;
     margin-bottom: 50px;
+    transition: 0.4s ease-out;
 }
+
+
+.card:hover{
+    transform: translateY(-20px)
+}
+
 
 .time-font {
     font-size: 30px
 }
+
 
 .sm-font {
     font-size: 18px
@@ -40,13 +47,15 @@
 }
     </style>
 </head>
-<body>
-<section class="hero is-primary ">
-        <div class="hero-body bg-success">
+<body onload="startTime()">
+<section class="hero is-primary mt-3">
+        <div class="hero-body">
             <div class="container">
                 <h1 class="title text-center" >
                     What's the weather like?
                 </h1>
+                <div id="txt" class="text-center"></div>
+
             </div>
         </div>
     </section>
@@ -54,19 +63,25 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-offset-4 is-4">
-                    <form method="POST">
+                    <form method="POST" class="form">
                         {% csrf_token %}
                         <div class="field has-addons">
-                            <div class="control is-expanded">
-                                {{ form.name }}
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-lg-10 ">
+                                        {{ form.name }}
+                                    </div>
+                                    <div class="col-lg-2 text-center">
+                                         <button type="submit" class="btn btn-outline-light">Add City</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="control">
-                                <button type="submit" class="btn btn-outline-success">
-                                    Add City
-                                </button>
-                            </div>
+
                         </div>
                     </form>
+                    {% for message in messages %}
+                        <p >{{message}}</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -80,9 +95,27 @@
             <p class="ml-auto mr-4 mb-0 med-font text-dark">{{ city_weather.temperature }}° C</p>
             <p class="time-font mb-0 ml-4 mt-auto text-dark">{{current_time}}</p>
             <p class="ml-4 mb-4 text-dark">{{week_day}} {{today}}</p>
+            <a href="{% url 'city-remove' city_weather.city %}" class="btn btn-outline-danger">Remove</a>
         </div>
         {% endfor %}
     </div>
 </div>
 </body>
+<script>
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+  setTimeout(startTime, 1000);
+}
+
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+</script>
 </html>
